@@ -80,7 +80,7 @@ if info_map and info_map.get("last_object_clicked_popup"):
     # Guardamos el ID del vehículo seleccionado
     id_vehiculo = info_map["last_object_clicked_popup"]
 
-    # Buscamos el vehículo seleccionado
+    
     for _, vehiculo in df.iterrows():
 
         if vehiculo["ID"] == id_vehiculo:
