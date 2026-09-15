@@ -1,67 +1,51 @@
+
 import folium
-import pandas as pd
 import streamlit as st
-from st_aggrid import AgGrid
 from streamlit_folium import st_folium
 
-# Título y subtítulo
-st.title("🚚 Panel de despacho - Fleet Track")
-st.subheader("Flota de reparto - Vitoria-Gasteiz")
+from flota_poo import cargar_flota, instanciar_flota
 
 
+def crear_mapa(df, flota):
 
-df = pd.DataFrame
+    mapa = folium.Map(
+        location=[42.8467, -2.6716],
+        zoom_start=13
+    )
 
-st.divider()
+    for nombre, vehiculo in df.items():
 
-# Tabla de vehículos
-st.subheader("🚚 Flota de vehículos")
-AgGrid(df)
+        folium.Marker(
+            location=[
+                vehiculo["latitud"],
+                vehiculo["longitud"]
+            ],
+            popup=vehiculo["matricula"],
+            tooltip=vehiculo["modelo"],
+            icon=folium.Icon(
+                color="red",
+                icon="info-sign"
+            )
+        ).add_to(mapa)
 
-# Creamos el mapa
-mapa = folium.Map(
-    location=[42.8467, -2.6716],
-    zoom_start=13
-)
-
-for _, vehiculo in df.iterrows():
-
-    # Creamos un marcador para cada vehículo
-    folium.Marker(
-        location=[
-            vehiculo["latitud"],
-            vehiculo["longitud"]
-        ],
-        popup=vehiculo["ID"],
-        tooltip=vehiculo["Vehiculo"],
-        icon=folium.Icon(
-            color="red",
-            icon="info-sign"
-        )
-    ).add_to(mapa)
-
-# Mostramos el mapa
-info_map = st_folium(
-    mapa,
-    width=700,
-    height=400
-)
-
-st.divider()
-
-if info_map and info_map.get("last_object_clicked_popup"):
+    info_map = st_folium(
+        mapa,
+        width=700,
+        height=400
+    )
 
     if info_map and info_map.get("last_object_clicked_popup"):
 
-    # Guardamos el ID del vehículo seleccionado
-     id_vehiculo = info_map["last_object_clicked_popup"]
+        matricula = info_map["last_object_clicked_popup"]
 
-    for _, vehiculo in df.iterrows():
+        for vehiculo in flota:
 
-        if vehiculo["ID"] == id_vehiculo:
+            if vehiculo.matricula == matricula:
 
-            # Mostramos el vehículo y su estado
-            st.success(
-                f"Has seleccionado correctamente {vehiculo['Vehiculo']} - "
-                f"Estado: {vehiculo['Estado']}"
-            )
+                st.subheader(f"🚚 {vehiculo.modelo}")
+
+               
+                vehiculo.requiere_mantenimiento()
+
+df = cargar_flota()
+flota = instanciar_flota()
