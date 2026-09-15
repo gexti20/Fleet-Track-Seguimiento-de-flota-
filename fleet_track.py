@@ -34,6 +34,7 @@ def crear_mapa(df, flota):
         height=400
     )
 
+
     if info_map and info_map.get("last_object_clicked_popup"):
 
         matricula = info_map["last_object_clicked_popup"]
