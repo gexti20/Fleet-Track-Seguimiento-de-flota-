@@ -2,7 +2,7 @@ import streamlit_authenticator as stauth
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 from flota_poo import cargar_flota, instanciar_flota
-from ev import crear_mapa
+from mapa import crear_mapa
 credentials = {
     "usernames":{
         "admin":{
