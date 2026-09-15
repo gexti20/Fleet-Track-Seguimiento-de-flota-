@@ -11,7 +11,6 @@ def crear_mapa(df, flota):
         location=[42.8467, -2.6716],
         zoom_start=13
     )
-
     for nombre, vehiculo in df.items():
 
         folium.Marker(
