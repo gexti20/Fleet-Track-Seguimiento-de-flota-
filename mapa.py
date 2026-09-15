@@ -4,7 +4,6 @@ from streamlit_folium import st_folium
 
 from flota_poo import cargar_flota, instanciar_flota
 
-
 def crear_mapa(df, flota):
 
     mapa = folium.Map(
